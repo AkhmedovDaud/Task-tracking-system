@@ -1,10 +1,11 @@
 package com.example.tasktrackingsystem.service.task;
 
-import com.example.tasktrackingsystem.dto.task.TaskDto;
-import com.example.tasktrackingsystem.entity.task.TaskEntity;
+import com.example.tasktrackingsystem.dto.TaskDto;
+import com.example.tasktrackingsystem.entity.TaskEntity;
 import com.example.tasktrackingsystem.enums.TaskStatus;
 import com.example.tasktrackingsystem.mappers.TaskMapper;
 import com.example.tasktrackingsystem.repository.TaskRepository;
+import com.example.tasktrackingsystem.repository.UserRepository;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -19,6 +20,7 @@ import java.util.stream.Collectors;
 public class TaskServiceImpl implements TaskService{
 
     private final TaskRepository taskRepository;
+    private final UserRepository userRepository;
     private final TaskMapper taskMapper;
 
     @Override
@@ -78,6 +80,24 @@ public class TaskServiceImpl implements TaskService{
         task.setStatus(TaskStatus.CLOSED.name());
         taskRepository.save(task);
         return taskMapper.toTaskDto(task);
+    }
+
+    @Override
+    public TaskDto setUserById(TaskDto taskDto, Long userId) {
+        Long taskId = taskDto.getId();
+        if(!userRepository.existsById(userId)){
+            log.error("Ошибка при назначении задачи пользователю. Пользователя с id = {} нет в БД", userId);
+            return null;
+        }
+        if(!taskRepository.existsById(taskId)){
+            log.error("Ошибка при назначении задачи пользователю. Задачи с id = {} нет в БД", taskId);
+            return null;
+        }
+        taskDto.setUserId(userId);
+        TaskEntity savedTask = taskMapper.toTaskEntity(taskDto);
+        taskRepository.save(savedTask);
+        log.info("Пользователь с id = {} успешно назначен на задачу с id = {}", userId, taskId);
+        return taskMapper.toTaskDto(savedTask);
     }
 
     @Override

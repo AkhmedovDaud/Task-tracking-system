@@ -1,9 +1,8 @@
 package com.example.tasktrackingsystem.repository;
 
 
-import com.example.tasktrackingsystem.entity.project.ProjectEntity;
+import com.example.tasktrackingsystem.entity.ProjectEntity;
 import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
 @Repository

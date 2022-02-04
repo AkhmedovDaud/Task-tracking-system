@@ -1,0 +1,6 @@
+#FileLock
+#Fri Feb 04 19:04:29 MSK 2022
+hostName=192.168.0.69
+id=17ec57ad0a9b55a99a3e674338dfc1d0838bd2dc623
+method=file
+server=192.168.0.69\:61992

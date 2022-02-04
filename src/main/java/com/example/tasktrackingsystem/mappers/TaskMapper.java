@@ -1,7 +1,7 @@
 package com.example.tasktrackingsystem.mappers;
 
-import com.example.tasktrackingsystem.dto.task.TaskDto;
-import com.example.tasktrackingsystem.entity.task.TaskEntity;
+import com.example.tasktrackingsystem.dto.TaskDto;
+import com.example.tasktrackingsystem.entity.TaskEntity;
 import com.example.tasktrackingsystem.mappers.utils.MapperUtils;
 import org.mapstruct.InjectionStrategy;
 import org.mapstruct.Mapper;

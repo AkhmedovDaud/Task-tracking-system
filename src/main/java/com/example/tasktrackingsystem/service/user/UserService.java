@@ -1,7 +1,7 @@
 package com.example.tasktrackingsystem.service.user;
 
 
-import com.example.tasktrackingsystem.dto.user.UserDto;
+import com.example.tasktrackingsystem.dto.UserDto;
 
 import java.util.List;
 
@@ -10,6 +10,4 @@ public interface UserService {
     void deleteById(Long id);
     UserDto findById(Long id);
     List<UserDto> findAll();
-    UserDto setTask(Long taskId, UserDto userDto);
-    UserDto setProject(Long projId, UserDto userDto);
 }

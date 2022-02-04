@@ -1,9 +1,8 @@
 package com.example.tasktrackingsystem.service.user;
 
-import com.example.tasktrackingsystem.dto.user.UserDto;
-import com.example.tasktrackingsystem.entity.project.ProjectEntity;
-import com.example.tasktrackingsystem.entity.task.TaskEntity;
-import com.example.tasktrackingsystem.entity.user.UserEntity;
+import com.example.tasktrackingsystem.dto.UserDto;
+import com.example.tasktrackingsystem.entity.ProjectEntity;
+import com.example.tasktrackingsystem.entity.UserEntity;
 import com.example.tasktrackingsystem.mappers.UserMapper;
 import com.example.tasktrackingsystem.repository.ProjectRepository;
 import com.example.tasktrackingsystem.repository.TaskRepository;
@@ -13,7 +12,6 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Slf4j
@@ -28,7 +26,9 @@ public class UserServiceImpl implements UserService{
     @Override
     public UserDto create(UserDto userDto) {
         if(userDto.getName() != null && userDto.getSurname() != null){
+            final ProjectEntity byId = projectRepository.getById(userDto.getProjectId());
             UserEntity savedUser = userMapper.toUserEntity(userDto);
+            savedUser.getProjects().add(byId);
             userRepository.save(savedUser);
             log.info("Пользователь успешно создан");
             return userMapper.toUserDto(savedUser);
@@ -67,39 +67,4 @@ public class UserServiceImpl implements UserService{
                 .collect(Collectors.toList());
     }
 
-    @Override
-    public UserDto setTask(Long taskId, UserDto userDto) {
-        Long userId = userDto.getId();
-        Optional <TaskEntity> taskById = taskRepository.findById(taskId);
-        if(!taskById.isPresent() || !userRepository.existsById(userId)){
-            log.error("Задача с id = {} не найдена или пользователь с id = {} не найден", taskId, userId);
-            return null;
-        }
-        taskById.ifPresent(task -> {
-            String taskName = task.getName();
-            userDto.setTasks(userDto.getTasks() + ", " + taskName);
-        });
-        UserEntity savedUser = userMapper.toUserEntity(userDto);
-        userRepository.save(savedUser);
-        log.info("Задача с id = {} успешно задана пользователю с id = {}", taskId, userId);
-        return userMapper.toUserDto(savedUser);
-    }
-
-    @Override
-    public UserDto setProject(Long projId, UserDto userDto) {
-        Long userId = userDto.getId();
-        Optional <ProjectEntity> projById = projectRepository.findById(projId);
-        if(!projById.isPresent() || !userRepository.existsById(userId)){
-            log.error("Проект с указанным id = {} не найден или пользователь с id = {} не найден", projId, userId);
-            return null;
-        }
-        projById.ifPresent(proj -> {
-            String projName = proj.getName();
-            userDto.setProjects(userDto.getProjects() + ", " + projName);
-        });
-        UserEntity savedUser = userMapper.toUserEntity(userDto);
-        userRepository.save(savedUser);
-        log.info("Проект с id = {} успешно задан пользователю с id = {}", projId, userId);
-        return userMapper.toUserDto(savedUser);
-    }
 }
