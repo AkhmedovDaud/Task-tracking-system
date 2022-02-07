@@ -42,21 +42,4 @@ public class ProjectController {
         return projectService.findAll();
     }
 
-//    @PostMapping(value = "/setUser/{userId}")
-//    public void setUser(@RequestBody ProjectDto projectDto, @PathVariable Long userId){
-//        log.info("ProjectController: вызов метода setUser с userId = {}", userId);
-//        projectService.setUserById(projectDto, userId);
-//    }
-
-//    @GetMapping(value = "/findUsers/{projectId}")
-//    public  List<ProjUsrsEntity> findUsers(@PathVariable Long projectId){
-//        log.info("ProjectController: вызов метода findUsers c projectId = {}", projectId);
-//        return projUsersRepository.findByProjectsId(projectId);
-//    }
-//
-//    @GetMapping(value = "/findAllUsers")
-//    public  List<ProjUsrsEntity> findAllUsers() {
-//        log.info("ProjectController: вызов метода findAllUsers для поиска всех пользователей по всем проектам");
-//        return projUsersRepository.findAll();
-//    }
 }

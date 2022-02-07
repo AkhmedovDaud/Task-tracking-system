@@ -18,7 +18,7 @@ public class UserController {
     private final WriterCSV fileWriter;
 
     @PostMapping(value = "/create")
-    public UserDto create(@RequestBody UserDto userDto){
+    public UserDto create(@RequestBody final UserDto userDto){
         log.info("UserController: вызов метода create");
         return userService.create(userDto);
     }

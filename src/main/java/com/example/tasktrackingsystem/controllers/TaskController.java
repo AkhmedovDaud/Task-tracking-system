@@ -18,7 +18,7 @@ public class TaskController {
     private final TaskMapper taskMapper;
 
     @PostMapping(value = "/create")
-    public TaskDto create(@RequestBody TaskDto taskDto){
+    public TaskDto create(@RequestBody final TaskDto taskDto){
         log.info("TaskController: вызов метода create");
         return taskService.create(taskDto);
     }
@@ -35,7 +35,7 @@ public class TaskController {
         return taskService.findById(id);
     }
 
-    @PostMapping(value = "/statusInProgress/{id}")
+    @PostMapping(value = "/ setStatusInProgress/{id}")
     public TaskDto setStatusInProgress(@PathVariable Long id){
         log.info("TaskController: вызов метода setStatusInProgress для задачи id = {}", id);
         return taskService.setStatusInProgress(id);
@@ -54,7 +54,7 @@ public class TaskController {
     }
 
     @PostMapping(value = "/setUser/{userId}")
-    public TaskDto setUser(@RequestBody TaskDto taskDto, @PathVariable Long userId){
+    public TaskDto setUser(@RequestBody final TaskDto taskDto, @PathVariable Long userId){
         log.info("TaskController: вызов метода setUser c userId = {}", userId);
         return taskService.setUserById(taskDto, userId);
     }
