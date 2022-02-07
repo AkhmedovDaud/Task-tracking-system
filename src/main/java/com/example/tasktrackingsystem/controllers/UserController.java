@@ -46,7 +46,10 @@ public class UserController {
         log.info("UserController: вызов метода createCSV для создания отчета по задачам для пользователей");
         try {
             fileWriter.write();
+            log.info("UserController: CSV отчёт успешно сформирован");
         }
-        catch (Exception e) {log.info("Файл для записи не найден");}
+       catch (Exception e) {
+            log.info("error: {}", e.getMessage());
+        }
     }
 }

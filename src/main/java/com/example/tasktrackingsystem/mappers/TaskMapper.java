@@ -13,5 +13,7 @@ public interface TaskMapper {
     @Mapping(source = "name", target = "name", qualifiedByName = "Trim")
     TaskEntity toTaskEntity(TaskDto taskDto);
 
+    @Mapping(source = "project", target = "projectId", qualifiedByName = "getProjectId")
+    @Mapping(source = "user", target = "userId", qualifiedByName = "getUserId")
     TaskDto toTaskDto(TaskEntity taskEntity);
 }

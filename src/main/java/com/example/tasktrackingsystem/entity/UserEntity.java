@@ -40,6 +40,9 @@ public class UserEntity {
     )
     Set<ProjectEntity> projects = new HashSet<>();
 
+    @OneToMany(mappedBy = "user")
+    Set<TaskEntity> tasks = new HashSet<>();
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;

@@ -23,7 +23,7 @@ public class TaskController {
         return taskService.create(taskDto);
     }
 
-    @DeleteMapping(value = "/delete/{id}")
+    @DeleteMapping(value = "/deleteById/{id}")
     public void delete(@PathVariable Long id){
         log.info("TaskController: вызов метода delete для задачи с id = {}", id);
         taskService.deleteById(id);

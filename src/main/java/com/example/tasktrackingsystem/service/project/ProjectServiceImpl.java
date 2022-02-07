@@ -22,26 +22,26 @@ public class ProjectServiceImpl implements ProjectService{
     private final UserRepository userRepository;
     private final ProjectMapper projectMapper;
 
-    public void create(ProjectDto projectDto) {
+    public ProjectDto create(ProjectDto projectDto) {
         if (projectDto == null) {
-          //  return null;
+            return null;
         }
 
         String name = projectDto.getName();
         if (name == null || name.isEmpty()) {
             log.error("Ошибка при создании проекта. Имя проекта не должно быть пустым");
-        //    return null;
+            return null;
         }
 
         name = name.trim();
         if (projectRepository.existsByName(name)){
             log.error("Ошибка при создании проекта. Проект с именем {} уже существует", name);
-           // return null;
+            return null;
         }
         ProjectEntity project = projectMapper.toProjectEntity(projectDto);
         projectRepository.save(project);
         log.info("Проект успешно создан: name = {}", name);
-        // return projectMapper.toProjectDto(project);
+         return projectMapper.toProjectDto(project);
     }
 
     @Override

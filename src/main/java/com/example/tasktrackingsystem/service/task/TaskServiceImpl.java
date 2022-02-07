@@ -2,8 +2,10 @@ package com.example.tasktrackingsystem.service.task;
 
 import com.example.tasktrackingsystem.dto.TaskDto;
 import com.example.tasktrackingsystem.entity.TaskEntity;
+import com.example.tasktrackingsystem.entity.UserEntity;
 import com.example.tasktrackingsystem.enums.TaskStatus;
 import com.example.tasktrackingsystem.mappers.TaskMapper;
+import com.example.tasktrackingsystem.repository.ProjectRepository;
 import com.example.tasktrackingsystem.repository.TaskRepository;
 import com.example.tasktrackingsystem.repository.UserRepository;
 import lombok.AllArgsConstructor;
@@ -21,6 +23,7 @@ public class TaskServiceImpl implements TaskService{
 
     private final TaskRepository taskRepository;
     private final UserRepository userRepository;
+    private final ProjectRepository projectRepository;
     private final TaskMapper taskMapper;
 
     @Override
@@ -31,6 +34,12 @@ public class TaskServiceImpl implements TaskService{
             return null;
         }
         TaskEntity savedTask = taskMapper.toTaskEntity(taskDto);
+        if (taskDto.getProjectId() != null) {
+            savedTask.setProject(projectRepository.getById(taskDto.getProjectId()));
+        }
+        if (taskDto.getUserId() != null){
+            savedTask.setUser(userRepository.getById(taskDto.getUserId()));
+        }
         taskRepository.save(savedTask);
         log.info("Задача успешно создана: name = {}", name);
         return taskMapper.toTaskDto(savedTask);
@@ -85,7 +94,8 @@ public class TaskServiceImpl implements TaskService{
     @Override
     public TaskDto setUserById(TaskDto taskDto, Long userId) {
         Long taskId = taskDto.getId();
-        if(!userRepository.existsById(userId)){
+        Optional<UserEntity> user = userRepository.findById(userId);
+        if(!user.isPresent()){
             log.error("Ошибка при назначении задачи пользователю. Пользователя с id = {} нет в БД", userId);
             return null;
         }
@@ -93,11 +103,11 @@ public class TaskServiceImpl implements TaskService{
             log.error("Ошибка при назначении задачи пользователю. Задачи с id = {} нет в БД", taskId);
             return null;
         }
-        taskDto.setUserId(userId);
-        TaskEntity savedTask = taskMapper.toTaskEntity(taskDto);
-        taskRepository.save(savedTask);
+        TaskEntity saveTask = taskMapper.toTaskEntity(taskDto);
+        saveTask.setUser(user.get());
+        taskRepository.save(saveTask);
         log.info("Пользователь с id = {} успешно назначен на задачу с id = {}", userId, taskId);
-        return taskMapper.toTaskDto(savedTask);
+        return taskMapper.toTaskDto(saveTask);
     }
 
     @Override

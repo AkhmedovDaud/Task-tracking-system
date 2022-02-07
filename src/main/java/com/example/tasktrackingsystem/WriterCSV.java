@@ -11,7 +11,12 @@ import org.springframework.stereotype.Component;
 
 import java.io.FileWriter;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
+import java.util.Objects;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 @Component
 @AllArgsConstructor
@@ -24,20 +29,21 @@ public class WriterCSV {
         CSVWriter writer = new CSVWriter(new FileWriter(file));
         List<TaskDto> tasksList = taskService.findAll();
         List<UserDto> usersList = userService.findAll();
-        String[] saveToCsv = new String[tasksList.size() + usersList.size()];
+        List<String[]> saveToCsv = new ArrayList<>();
 
+        int currentRow = 0;
         for(int i = 0; i < usersList.size(); i++){
-            int currentRow = 1;
             UserDto user = usersList.get(i);
-            saveToCsv[currentRow++] = user.toString();
+            saveToCsv.add(new String[]{user.toString()});
             for(int j = 0; j < tasksList.size(); j++){
                 TaskDto task = tasksList.get(j);
-                if(user.getId() != task.getUserId()) j++;
-                saveToCsv[currentRow++] = task.toString();
-                j++;
+                if(!Objects.equals(user.getId(), task.getUserId())) {
+                    j++;
+                }
+                saveToCsv.add(new String[]{task.toString()});
             }
         }
-        writer.writeNext(saveToCsv);
+        writer.writeAll(saveToCsv);
         writer.close();
     }
 }

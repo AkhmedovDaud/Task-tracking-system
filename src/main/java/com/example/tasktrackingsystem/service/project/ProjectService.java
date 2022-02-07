@@ -5,7 +5,7 @@ import com.example.tasktrackingsystem.dto.ProjectDto;
 import java.util.List;
 
 public interface ProjectService{
-    void create(ProjectDto projectDto);
+    ProjectDto create(ProjectDto projectDto);
     void deleteById(Long id);
     ProjectDto findById(Long id);
 //    void setUserById(ProjectDto projectDto, Long userId);

@@ -33,7 +33,7 @@ public class TaskEntity {
     @Column(name = "STATUS")
     private String status;
 
-    @OneToOne(fetch = FetchType.EAGER)
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "USER_ID")
     private UserEntity user;
 

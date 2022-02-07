@@ -19,9 +19,9 @@ public class ProjectController {
     private final ProjectService projectService;
 
     @PostMapping(value = "/create")
-    public void create(@RequestBody final ProjectDto projectDto){
+    public ProjectDto create(@RequestBody final ProjectDto projectDto){
         log.info("ProjectController: вызов метода createProject с параметром: projectDto = {}", projectDto);
-       projectService.create(projectDto);
+        return projectService.create(projectDto);
     }
 
     @DeleteMapping(value = "/deleteById/{id}")
